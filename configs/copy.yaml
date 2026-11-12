@@ -1,0 +1,27 @@
+# Phase 3 sanity check: copy random symbol sequences. Runs on CPU in a few minutes.
+out_dir: runs/copy
+seed: 1
+data:
+  task: copy
+  vocab_size: 20        # 4 special tokens + 16 symbols
+  min_len: 5
+  max_len: 20
+  train_size: 50000
+  valid_size: 500
+  test_size: 1000       # never seen in training
+model:
+  d_model: 128
+  num_heads: 4
+  d_ff: 512
+  num_encoder_layers: 2
+  num_decoder_layers: 2
+  dropout: 0.1
+train:
+  max_tokens: 4096
+  max_steps: 2000
+  warmup: 400
+  log_every: 100
+  eval_every: 500
+  save_every: 250
+  keep_checkpoints: 5
+  average_last: 5

@@ -1,0 +1,26 @@
+# Phase 3 end-to-end check: German -> English on Multi30k (29k training pairs), small model, CPU.
+# Prepare data first:  python scripts/prepare_multi30k.py --out data/multi30k --vocab-size 8000
+out_dir: runs/multi30k
+seed: 1
+data:
+  task: translation
+  data_dir: data/multi30k
+  src_lang: de
+  tgt_lang: en
+model:                  # paper base: 6+6 layers, d_model 512, 8 heads, d_ff 2048
+  d_model: 256
+  num_heads: 4          # keeps d_k = 64, as in the paper
+  d_ff: 1024
+  num_encoder_layers: 3
+  num_decoder_layers: 3
+  dropout: 0.1
+train:
+  max_tokens: 6144      # ~400 sentence pairs per batch; paper: ~25k tokens per side
+  max_steps: 3000       # ~34 epochs
+  warmup: 1000          # shorter than the paper's 4000 because the whole run is only 3000 steps
+  label_smoothing: 0.1
+  log_every: 50
+  eval_every: 500
+  save_every: 200
+  keep_checkpoints: 5
+  average_last: 5
